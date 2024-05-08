@@ -1,5 +1,7 @@
 import pandas as pd
 import math
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 def precisao_recall(docs_retornados, docs_relevantes, k=None):
     """
@@ -196,3 +198,50 @@ def metricas(resultado_pesquisa, qrels,
         pd_metricas[f'nDCG@{valor_k}'] = ndcg_em_k[valor_k]
 
     return pd_metricas
+
+
+
+# Funções para plotar métricas
+def histograma_metricas(df, metrica_1='P@10', metrica_2='R@10', metrica_3='MRR@10', metrica_4='nDCG@10'):
+    plt.figure(figsize=(12, 8))
+
+    cores_seaborn = sns.color_palette('deep')
+    alpha = 1
+    
+    plt.subplot(2, 2, 1)
+    plt.hist(df[metrica_1], bins=20, color=cores_seaborn[0], alpha=alpha)
+    plt.title(f'Histograma de {metrica_1}')
+    plt.xlabel('Valor')
+    plt.ylabel('Frequência')
+    
+    plt.subplot(2, 2, 2)
+    plt.hist(df[metrica_2], bins=20, color=cores_seaborn[1], alpha=alpha)
+    plt.title(f'Histograma de {metrica_2}')
+    plt.xlabel('Valor')
+    plt.ylabel('Frequência')
+    
+    plt.subplot(2, 2, 3)
+    plt.hist(df[metrica_3], bins=20, color=cores_seaborn[2], alpha=alpha)
+    plt.title(f'Histograma de {metrica_3}')
+    plt.xlabel('Valor')
+    plt.ylabel('Frequência')
+    
+    plt.subplot(2, 2, 4)
+    plt.hist(df[metrica_4], bins=20, color=cores_seaborn[3], alpha=alpha)
+    plt.title(f'Histograma de {metrica_4}')
+    plt.xlabel('Valor')
+    plt.ylabel('Frequência')
+    
+    plt.tight_layout()
+    plt.show()
+
+def boxplot_metricas(df, metricas=['P@10', 'R@10', 'MRR@10', 'nDCG@10']):
+    df_melted = df.melt(value_vars=metricas, var_name='metric', value_name='value')
+
+    plt.figure(figsize=(12, 6))
+    sns.boxplot(x='metric', y='value', data=df_melted)
+    plt.xticks(rotation=45)
+    plt.xlabel('Métrica')
+    plt.ylabel('Valor')
+    plt.title('Boxplot das Métricas')
+    plt.show()
