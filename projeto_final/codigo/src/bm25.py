@@ -2,12 +2,40 @@ from collections import Counter
 from tqdm import tqdm
 import array
 import math
+import pickle
 
+import nltk
+from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
+from nltk.stem import RSLPStemmer
+from unidecode import unidecode
+import string
+
+nltk.download('punkt')
+nltk.download('stopwords')
+nltk.download('rslp')
+
+def tokenizador_pt(texto):
+    # Remove acentuação e converte para minúsculo
+    texto = unidecode(texto.lower())
+    
+    # Remove pontuação
+    texto = ''.join([char if char not in string.punctuation else ' ' for char in texto])
+    
+    # Tokeniza o texto
+    tokens = word_tokenize(texto, language='portuguese')
+    
+    # Remove stopwords e aplica stemização
+    stemmer = RSLPStemmer()
+    tokens_processados = [stemmer.stem(token) for token in tokens if token not in stopwords.words('portuguese')]
+    
+    return tokens_processados
+    
 # Definição de uma classe para índice invertido
 class IndiceInvertido:
 
-    # Recebe 'tokenizar', uma função tokenizadora. Por padrão, ela só converte para minúsculo e faz o split
-    def __init__(self, tokenizar=lambda x: x.lower().split()):
+    # Recebe 'tokenizar', uma função tokenizadora. Por padrão, é a função tokenizador_pt
+    def __init__(self, tokenizar=tokenizador_pt):
         # Cria um índice invertido vazio.
         # A chave é um token e o valor é um objeto contendo a lista de ids de documento que contém o token
         # e uma lista de total de ocorrências do token naquele documento

@@ -5,3 +5,4 @@ pandas
 transformers
 evaluate
 trectools
+spacy
