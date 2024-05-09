@@ -6,3 +6,5 @@ transformers
 evaluate
 trectools
 spacy
+langchain
+langchain_community

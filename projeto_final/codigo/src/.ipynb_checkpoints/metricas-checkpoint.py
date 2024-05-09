@@ -137,7 +137,7 @@ def metricas(resultado_pesquisa, qrels,
              col_qrels_query_key="QUERY_KEY",
              col_qrels_doc_key="DOC_KEY",
              col_qrels_score="SCORE",
-             k=[5, 10, 50], debug=False, aproximacao_trec_eval=False):
+             k=[5, 10, 20, 50], debug=False, aproximacao_trec_eval=False):
     """
         Calcula um conjunto de métricas para um resultado de pesquisa e um conjunto qrels.
         resultado_pesquisa -- DataFrame Pandas contendo o resultado das pesquisas.
