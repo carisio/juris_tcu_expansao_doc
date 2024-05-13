@@ -3,6 +3,7 @@ from tqdm import tqdm
 import array
 import math
 import pickle
+import re
 
 import nltk
 from nltk.tokenize import word_tokenize
@@ -10,6 +11,8 @@ from nltk.corpus import stopwords
 from nltk.stem import RSLPStemmer
 from unidecode import unidecode
 import string
+
+from formatador import remove_html
 
 nltk.download('punkt')
 nltk.download('stopwords')
@@ -30,7 +33,10 @@ def tokenizador_pt(texto):
     tokens_processados = [stemmer.stem(token) for token in tokens if token not in stopwords.words('portuguese')]
     
     return tokens_processados
-    
+
+def tokenizador_pt_remove_html(texto):
+    return tokenizador_pt(remove_html(texto))
+
 # Definição de uma classe para índice invertido
 class IndiceInvertido:
 

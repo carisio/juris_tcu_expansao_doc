@@ -8,3 +8,5 @@ trectools
 spacy
 langchain
 langchain_community
+Groq
+OpenAI

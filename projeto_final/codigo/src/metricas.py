@@ -2,6 +2,7 @@ import pandas as pd
 import math
 import matplotlib.pyplot as plt
 import seaborn as sns
+import numpy as np
 
 def precisao_recall(docs_retornados, docs_relevantes, k=None):
     """
@@ -202,14 +203,14 @@ def metricas(resultado_pesquisa, qrels,
 
 
 # Funções para plotar métricas
-def histograma_metricas(df, metrica_1='P@10', metrica_2='R@10', metrica_3='MRR@10', metrica_4='nDCG@10', ylim=None):
+def histograma_metricas(df, metrica_1='P@10', metrica_2='R@10', metrica_3='MRR@10', metrica_4='nDCG@10', ylim=None, bins=10):
     plt.figure(figsize=(12, 8))
 
     cores_seaborn = sns.color_palette('deep')
     alpha = 1
     
     plt.subplot(2, 2, 1)
-    plt.hist(df[metrica_1], bins=20, color=cores_seaborn[0], alpha=alpha)
+    plt.hist(df[metrica_1], bins=np.linspace(0, 1, bins+1), color=cores_seaborn[0], alpha=alpha)
     plt.title(f'Histograma de {metrica_1}')
     plt.xlabel('Valor')
     plt.ylabel('Frequência')
@@ -218,7 +219,7 @@ def histograma_metricas(df, metrica_1='P@10', metrica_2='R@10', metrica_3='MRR@1
         plt.ylim(ylim[0], ylim[1])
     
     plt.subplot(2, 2, 2)
-    plt.hist(df[metrica_2], bins=20, color=cores_seaborn[1], alpha=alpha)
+    plt.hist(df[metrica_2], bins=np.linspace(0, 1, bins+1), color=cores_seaborn[1], alpha=alpha)
     plt.title(f'Histograma de {metrica_2}')
     plt.xlabel('Valor')
     plt.ylabel('Frequência')
@@ -227,7 +228,7 @@ def histograma_metricas(df, metrica_1='P@10', metrica_2='R@10', metrica_3='MRR@1
         plt.ylim(ylim[0], ylim[1])
     
     plt.subplot(2, 2, 3)
-    plt.hist(df[metrica_3], bins=20, color=cores_seaborn[2], alpha=alpha)
+    plt.hist(df[metrica_3], bins=np.linspace(0, 1, bins+1), color=cores_seaborn[2], alpha=alpha)
     plt.title(f'Histograma de {metrica_3}')
     plt.xlabel('Valor')
     plt.ylabel('Frequência')
@@ -236,7 +237,7 @@ def histograma_metricas(df, metrica_1='P@10', metrica_2='R@10', metrica_3='MRR@1
         plt.ylim(ylim[0], ylim[1])
     
     plt.subplot(2, 2, 4)
-    plt.hist(df[metrica_4], bins=20, color=cores_seaborn[3], alpha=alpha)
+    plt.hist(df[metrica_4], bins=np.linspace(0, 1, bins+1), color=cores_seaborn[3], alpha=alpha)
     plt.title(f'Histograma de {metrica_4}')
     plt.xlabel('Valor')
     plt.ylabel('Frequência')
