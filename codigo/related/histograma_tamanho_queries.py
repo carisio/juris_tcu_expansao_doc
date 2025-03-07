@@ -7,7 +7,7 @@ PASTA_JURIS_TCU = '../src/dados/outputs/1_tratamento_juris_tcu/'
 queries = pd.read_csv(f'{PASTA_JURIS_TCU}query_tratado.csv', sep='|')
 
 
-def plot_histogram(array1, array2, array3, labels):
+def plot_histogram(array1, array2, array3, labels, nome_figura_salvar = None):
     # Contar a quantidade de palavras em cada string
     word_counts1 = [len(s.split()) for s in array1]
     word_counts2 = [len(s.split()) for s in array2]
@@ -36,7 +36,7 @@ def plot_histogram(array1, array2, array3, labels):
     width = 0.25  # Largura das barras
     
     # Criar o gráfico de barras
-    fig, ax = plt.subplots(figsize=(8, 6))
+    fig, ax = plt.subplots(figsize=(10, 6))
     ax.bar(x - width, freq1, width, label=labels[0], alpha=0.7)
     ax.bar(x, freq2, width, label=labels[1], alpha=0.7)
     ax.bar(x + width, freq3, width, label=labels[2], alpha=0.7)
@@ -45,19 +45,20 @@ def plot_histogram(array1, array2, array3, labels):
     ax.yaxis.grid(True, linestyle='dashed', alpha=0.5)
     
     # Plotar as médias corretamente sem arredondamento
-    ax.axvline(np.interp(mean1, all_keys, x), color='blue', linestyle='dashed', linewidth=1, label=f'Mean {labels[0]}')
-    ax.axvline(np.interp(mean2, all_keys, x), color='orange', linestyle='dashed', linewidth=1, label=f'Mean {labels[1]}')
-    ax.axvline(np.interp(mean3, all_keys, x), color='green', linestyle='dashed', linewidth=1, label=f'Mean {labels[2]}')
+    ax.axvline(np.interp(mean1, all_keys, x), color='tab:blue', linestyle='dashed', linewidth=1, label=f'Mean {labels[0]}')
+    ax.axvline(np.interp(mean2, all_keys, x), color='tab:orange', linestyle='dashed', linewidth=1, label=f'Mean {labels[1]}')
+    ax.axvline(np.interp(mean3, all_keys, x), color='tab:green', linestyle='dashed', linewidth=1, label=f'Mean {labels[2]}')
     
     # Ajustar rótulos e legenda
-    ax.set_xlabel("Number of words")
+    ax.set_xlabel("Number of words per query")
     ax.set_ylabel("Frequency")
-    ax.set_title("Histogram")
     ax.set_xticks(x)
     ax.set_xticklabels(all_keys)
     ax.legend()
     
     plt.tight_layout()
+    if nome_figura_salvar is not None:
+        plt.savefig(nome_figura_salvar, dpi=600, bbox_inches='tight')
     plt.show()
 
 # Exemplo de uso
@@ -66,4 +67,4 @@ g1 = queries_list[0:50]
 g2 = queries_list[50:100]
 g3 = queries_list[100:150]
 labels = ["G1", "G2", "G3"]
-plot_histogram(g1, g2, g3, labels)
+plot_histogram(g1, g2, g3, labels, "histogram_words_query.png")

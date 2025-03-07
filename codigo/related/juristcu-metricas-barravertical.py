@@ -89,7 +89,7 @@ def percentual_do_baseline(resultados, baseline):
     return [(v - baseline) / baseline * 100 for v in resultados]
 
 
-def plot_metricas(grupo, calcular_percentual=True):
+def plot_metricas(grupo, calcular_percentual=True, salvar_figura=False, baseline_no_topo=True):
     if grupo == 1:
         metricas = metricas_g1
     elif grupo == 2:
@@ -102,9 +102,15 @@ def plot_metricas(grupo, calcular_percentual=True):
     fig, axes = plt.subplots(2, 2, figsize=(12, 10))
     fig.suptitle(f"Query group: G{grupo}")
 
-    #colors = plt.cm.get_cmap("tab10", 2)
+    mapa = plt.cm.get_cmap("tab10", 20)
     #colors = {"BM25 Variants": colors(0), "BERT Variants": colors(1)}
-    colors = {"baseline": "lightgray", "expansao_doc": "lightgreen", "semantico": "lightsalmon"}
+    #0055FFFF, #3399FFFF, #66CCFFFF, #99EEFFFF, #CCFFFFFF, #FFFFCCFF, #FFEE99FF, #FFCC66FF, #FF9933FF, #FF5500FF
+    colors = {
+        "baseline": "lightgray",
+        "expansao_doc": "lightgreen",
+        "semantico": "lightsalmon"
+    }
+    alpha=0.7
 
     for idx_metrica, label_metrica in enumerate(label_metricas):
         ax = axes[idx_metrica // 2, idx_metrica % 2]
@@ -134,11 +140,12 @@ def plot_metricas(grupo, calcular_percentual=True):
         # Barras
         if not calcular_percentual: # Se não for percentual, aí tem que adicionar o baseline
             ax.barh(y=y_baseline, width=[baseline_value], color=colors["baseline"], label="baseline")
-        barras_exp_doc = ax.barh(y=y_expansao_doc, width=expansao_doc_values, color=colors["expansao_doc"], label="expansao_doc")
-        barras_semantico = ax.barh(y=y_semantico, width=semantico_values, color=colors["semantico"], label="semantico")
+        barras_exp_doc = ax.barh(y=y_expansao_doc, width=expansao_doc_values, color=colors["expansao_doc"], label="expansao_doc", alpha=alpha)
+        barras_semantico = ax.barh(y=y_semantico, width=semantico_values, color=colors["semantico"], label="semantico", alpha=alpha)
 
         # Pra inverter, tem que corrigir a posição do label depois no ax.text
-        # ax.invert_yaxis()
+        if baseline_no_topo:
+            ax.invert_yaxis()
         
         # Rótulos percentual em cima da barra
         if not calcular_percentual:
@@ -147,7 +154,8 @@ def plot_metricas(grupo, calcular_percentual=True):
                 valor_para_exibir = round(percentual_do_baseline(altura, baseline_value))
                 posicao_x_para_exibir = barra.get_width() + 6 if valor_para_exibir < -50 else barra.get_width() / 2
                 valor_para_exibir = f"{'+' if valor_para_exibir > 0 else ''}{valor_para_exibir}%"
-                ax.text(posicao_x_para_exibir, barra.get_y(), # + barra.get_height() / 2,  # Posição do texto
+                ax.text(posicao_x_para_exibir,
+                        barra.get_y() + (barra.get_height() if baseline_no_topo else 0),  # Posição do texto
                         valor_para_exibir,  # O texto a ser exibido
                         ha='center', va='bottom', fontsize=12)  # Alinhamento e tamanho da fonte
             ax.set_xlim(0, 100)
@@ -182,8 +190,8 @@ def plot_metricas(grupo, calcular_percentual=True):
 
     # Criando os elementos da legenda com as cores corretas
     baseline_patch = mpatches.Patch(color=colors['baseline'], label="Baseline")
-    expansao_doc_patch = mpatches.Patch(color=colors['expansao_doc'], label="Document expansion variants")
-    semantico_patch = mpatches.Patch(color=colors['semantico'], label="Semantic variants")
+    expansao_doc_patch = mpatches.Patch(color=colors['expansao_doc'], label="Document expansion variants", alpha=alpha)
+    semantico_patch = mpatches.Patch(color=colors['semantico'], label="Semantic variants", alpha=alpha)
 
     # Criando a legenda global
     if calcular_percentual:
@@ -196,7 +204,14 @@ def plot_metricas(grupo, calcular_percentual=True):
                bbox_to_anchor=(0.55, 0.45))
     
     plt.tight_layout(rect=[0, 0, 1, 1], h_pad=5, w_pad=5)
+    
+    if salvar_figura:
+        plt.savefig(f"metrics_G{grupo}.png", dpi=600, bbox_inches='tight')
     plt.show()
         
 
-plot_metricas(grupo=3, calcular_percentual=False)
+salvar_figura=True
+baseline_no_topo=True
+plot_metricas(grupo=1, calcular_percentual=False, salvar_figura=salvar_figura, baseline_no_topo=baseline_no_topo)
+plot_metricas(grupo=3, calcular_percentual=False, salvar_figura=salvar_figura, baseline_no_topo=baseline_no_topo)
+plot_metricas(grupo=2, calcular_percentual=False, salvar_figura=salvar_figura, baseline_no_topo=baseline_no_topo)
