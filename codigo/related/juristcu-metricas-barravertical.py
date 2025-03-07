@@ -91,7 +91,7 @@ def percentual_do_baseline(resultados, baseline):
     return [(v - baseline) / baseline * 100 for v in resultados]
 
 
-def plot_metricas(grupo, calcular_percentual=True, salvar_figura=False, baseline_no_topo=True):
+def plot_metricas(grupo, calcular_percentual=True, salvar_figura=False, baseline_no_topo=True, limite_para_percentual_fora_barra=-50):
     if grupo == 1:
         metricas = metricas_g1
     elif grupo == 2:
@@ -152,7 +152,7 @@ def plot_metricas(grupo, calcular_percentual=True, salvar_figura=False, baseline
             for barra in barras_exp_doc + barras_semantico:
                 altura = barra.get_width()
                 valor_para_exibir = round(percentual_do_baseline(altura, baseline_value))
-                posicao_x_para_exibir = barra.get_width() + 6 if valor_para_exibir < -50 else barra.get_width() / 2
+                posicao_x_para_exibir = barra.get_width() + 6 if valor_para_exibir < limite_para_percentual_fora_barra else barra.get_width() / 2
                 valor_para_exibir = f"{'+' if valor_para_exibir > 0 else ''}{valor_para_exibir}%"
                 ax.text(posicao_x_para_exibir,
                         barra.get_y() + (barra.get_height() if baseline_no_topo else 0),  # Posição do texto
@@ -212,6 +212,6 @@ def plot_metricas(grupo, calcular_percentual=True, salvar_figura=False, baseline
 
 salvar_figura=True
 baseline_no_topo=True
-plot_metricas(grupo=1, calcular_percentual=False, salvar_figura=salvar_figura, baseline_no_topo=baseline_no_topo)
-plot_metricas(grupo=2, calcular_percentual=False, salvar_figura=salvar_figura, baseline_no_topo=baseline_no_topo)
-plot_metricas(grupo=3, calcular_percentual=False, salvar_figura=salvar_figura, baseline_no_topo=baseline_no_topo)
+plot_metricas(grupo=1, calcular_percentual=False, salvar_figura=salvar_figura, baseline_no_topo=baseline_no_topo, limite_para_percentual_fora_barra=-50)
+plot_metricas(grupo=2, calcular_percentual=False, salvar_figura=salvar_figura, baseline_no_topo=baseline_no_topo, limite_para_percentual_fora_barra=-100)
+plot_metricas(grupo=3, calcular_percentual=False, salvar_figura=salvar_figura, baseline_no_topo=baseline_no_topo, limite_para_percentual_fora_barra=-100)
