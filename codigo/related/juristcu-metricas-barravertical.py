@@ -9,14 +9,15 @@ import pandas as pd
 ordem_expansao_doc = ["BM25.dT5q",
                       "BM25.Syn(GPT3.5)", "BM25.Syn(GPT4o)", "BM25.Syn(Llama3)",
                       "BM25.dT5q.Syn(GPT35)", "BM25.dT5q.Syn(GPT4o)", "BM25.dT5q.Syn(Llama3)"]
-ordem_semantico = ["BERT.pt.base", "BERT.pt.base.TCU",
-                   "BERT.pt.legal", "BERT.pt.legal.STJ",
+ordem_semantico = ["BERT.pt.TCU",
+                   "BERT.pt.large",
+                   "BERT.pt.large.legal",# "BERT.pt.large.legal.kd",
                    "BERT.ml",
                    "OpenAI.small", "OpenAI.large"]
 
 # Define as métricas para os grupos G1, G2 e G3
 metricas_g1 = {
-    "Baseline"                 : [23.8, 19.7, 53.9, 27.5],
+    "BM25"                 : [23.8, 19.7, 53.9, 27.5],
     "expansao_doc": {
         "BM25.dT5q"            : [33.6, 27.4, 65.4, 38.5],
         "BM25.Syn(GPT3.5)"     : [26.8, 22.1, 55.1, 30.1],
@@ -27,10 +28,10 @@ metricas_g1 = {
         "BM25.dT5q.Syn(Llama3)": [35.2, 28.7, 69.1, 40.2]
         },
     "semantico": {
-        "BERT.pt.base"         : [7.4 , 6.3 , 19.9, 8.3 ],
-        "BERT.pt.base.TCU"     : [4.4 , 3.5 , 17.4, 5.6 ],
-        "BERT.pt.legal"        : [10.8, 8.8 , 28.8, 12.1],
-        "BERT.pt.legal.STJ"    : [20.2, 16.3, 42.4, 22.6],
+        "BERT.pt.TCU"           : [4.4 , 3.5 , 17.4, 5.6 ],
+        "BERT.pt.large"         : [7.4 , 6.3 , 19.9, 8.3 ],
+        "BERT.pt.large.legal"   : [10.8, 8.8 , 28.8, 12.1],
+#        "BERT.pt.large.legal.kd"    : [20.2, 16.3, 42.4, 22.6],
         "BERT.ml"              : [14.6, 11.6, 35.1, 16.1],
         "OpenAI.small"         : [37.8, 30.7, 74.9, 44.5],
         "OpenAI.large"         : [40.8, 33.2, 75.4, 47.3]
@@ -38,7 +39,7 @@ metricas_g1 = {
 }
 
 metricas_g2 = {
-    "Baseline"                 : [37.8, 31.8, 86.7, 51.1],
+    "BM25"                 : [37.8, 31.8, 86.7, 51.1],
     "expansao_doc": {
         "BM25.dT5q"            : [40.2, 33.8, 88.2, 54.6],
         "BM25.Syn(GPT3.5)"     : [40.8, 34.3, 88.5, 54.4],
@@ -49,10 +50,10 @@ metricas_g2 = {
         "BM25.dT5q.Syn(Llama3)": [42.0, 35.3, 90.9, 56.5]
         },
     "semantico": {
-        "BERT.pt.base"         : [15.6, 13.2, 41.8, 18.7],
-        "BERT.pt.base.TCU"     : [11.0, 9.2 , 35.9, 13.4],
-        "BERT.pt.legal"        : [16.6, 13.7, 46.4, 21.0],
-        "BERT.pt.legal.STJ"    : [30.2, 24.8, 71.3, 38.5],
+        "BERT.pt.TCU"           : [11.0, 9.2 , 35.9, 13.4],
+        "BERT.pt.large"         : [15.6, 13.2, 41.8, 18.7],
+        "BERT.pt.large.legal"   : [16.6, 13.7, 46.4, 21.0],
+#        "BERT.pt.large.legal.kd"    : [30.2, 24.8, 71.3, 38.5],
         "BERT.ml"              : [24.6, 20.3, 60.5, 31.5],
         "OpenAI.small"         : [46.8, 38.9, 89.5, 58.8],
         "OpenAI.large"         : [49.2, 40.8, 89.2, 61.8]
@@ -60,7 +61,7 @@ metricas_g2 = {
 }
 
 metricas_g3 = {
-    "Baseline"                 : [38.8, 34.5, 91.8, 53.3],
+    "BM25"                 : [38.8, 34.5, 91.8, 53.3],
     "expansao_doc": {
         "BM25.dT5q"            : [40.8, 36.2, 93.9, 55.6],
         "BM25.Syn(GPT3.5)"     : [40.6, 36.1, 91.5, 54.6],
@@ -71,10 +72,10 @@ metricas_g3 = {
         "BM25.dT5q.Syn(Llama3)": [42.0, 37.2, 92.9, 56.4]
         },
     "semantico": {
-        "BERT.pt.base"         : [22.2, 19.6, 60.7, 28.9],
-        "BERT.pt.base.TCU"     : [20.2, 18.0, 60.8, 28.8],
-        "BERT.pt.legal"        : [18.2, 16.1, 49.2, 23.4],
-        "BERT.pt.legal.STJ"    : [34.8, 30.7, 86.8, 46.0],
+        "BERT.pt.TCU"          : [20.2, 18.0, 60.8, 28.8],
+        "BERT.pt.large"        : [22.2, 19.6, 60.7, 28.9],
+        "BERT.pt.large.legal"  : [18.2, 16.1, 49.2, 23.4],
+#        "BERT.pt.large.legal.kd"    : [34.8, 30.7, 86.8, 46.0],
         "BERT.ml"              : [34.4, 30.5, 79.2, 45.2],
         "OpenAI.small"         : [48.2, 42.5, 91.7, 60.9],
         "OpenAI.large"         : [47.2, 41.5, 91.5, 60.8]
@@ -118,7 +119,7 @@ def plot_metricas(grupo, calcular_percentual=True, salvar_figura=False, baseline
         # expansao_doc e semantico são mapas. Precisamos extrair os vetores
         # do mapa na ordem em que devem ser visualizados
         # idx_metrica é de 0 a 3 e representa P, R, MRR e nDCG
-        baseline_value = metricas["Baseline"][idx_metrica]
+        baseline_value = metricas["BM25"][idx_metrica]
         expansao_doc_values = [metricas["expansao_doc"][metodo][idx_metrica] for metodo in ordem_expansao_doc]
         semantico_values = [metricas["semantico"][metodo][idx_metrica] for metodo in ordem_semantico]
         
@@ -138,7 +139,7 @@ def plot_metricas(grupo, calcular_percentual=True, salvar_figura=False, baseline
     
         # Barras
         if not calcular_percentual: # Se não for percentual, aí tem que adicionar o baseline
-            ax.barh(y=y_baseline, width=[baseline_value], color=colors["baseline"], label="baseline")
+            ax.barh(y=y_baseline, width=[baseline_value], color=colors["baseline"], label="Baseline")
         barras_exp_doc = ax.barh(y=y_expansao_doc, width=expansao_doc_values, color=colors["expansao_doc"], label="expansao_doc", alpha=alpha)
         barras_semantico = ax.barh(y=y_semantico, width=semantico_values, color=colors["semantico"], label="semantico", alpha=alpha)
 
@@ -171,7 +172,7 @@ def plot_metricas(grupo, calcular_percentual=True, salvar_figura=False, baseline
         else:
             # Eixo x
             ax.set_yticks(list(y_baseline) + list(y_expansao_doc) + list(y_semantico))
-            ax.set_yticklabels(["Baseline"] + ordem_expansao_doc + ordem_semantico)
+            ax.set_yticklabels(["BM25 (baseline)"] + ordem_expansao_doc + ordem_semantico)
             # Eixo y
             ax.set_xlabel(f"{label_metrica}")
             # Título
@@ -188,7 +189,7 @@ def plot_metricas(grupo, calcular_percentual=True, salvar_figura=False, baseline
                
 
     # Criando os elementos da legenda com as cores corretas
-    baseline_patch = mpatches.Patch(color=colors['baseline'], label="Baseline")
+    baseline_patch = mpatches.Patch(color=colors['baseline'], label="BM25 (baseline)")
     expansao_doc_patch = mpatches.Patch(color=colors['expansao_doc'], label="Document expansion variants", alpha=alpha)
     semantico_patch = mpatches.Patch(color=colors['semantico'], label="Semantic variants", alpha=alpha)
 
@@ -212,5 +213,5 @@ def plot_metricas(grupo, calcular_percentual=True, salvar_figura=False, baseline
 salvar_figura=True
 baseline_no_topo=True
 plot_metricas(grupo=1, calcular_percentual=False, salvar_figura=salvar_figura, baseline_no_topo=baseline_no_topo)
-plot_metricas(grupo=3, calcular_percentual=False, salvar_figura=salvar_figura, baseline_no_topo=baseline_no_topo)
 plot_metricas(grupo=2, calcular_percentual=False, salvar_figura=salvar_figura, baseline_no_topo=baseline_no_topo)
+plot_metricas(grupo=3, calcular_percentual=False, salvar_figura=salvar_figura, baseline_no_topo=baseline_no_topo)
