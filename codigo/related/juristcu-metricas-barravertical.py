@@ -9,7 +9,8 @@ import pandas as pd
 ordem_expansao_doc = ["BM25.dT5q",
                       "BM25.Syn(GPT3.5)", "BM25.Syn(GPT4o)", "BM25.Syn(Llama3)",
                       "BM25.dT5q.Syn(GPT35)", "BM25.dT5q.Syn(GPT4o)", "BM25.dT5q.Syn(Llama3)"]
-ordem_semantico = ["BERT.pt.TCU", "BERT.pt.base", "BERT.pt.legal", "BERT.pt.STJ",
+ordem_semantico = ["BERT.pt.base",
+                   "BERT.pt.TCU", "BERT.pt.legal", "BERT.pt.STJ",
                    "BERT.ml",
                    "OpenAI.small", "OpenAI.large"]
 
@@ -26,8 +27,8 @@ metricas_g1 = {
         "BM25.dT5q.Syn(Llama3)": [35.2, 28.7, 69.1, 40.2]
         },
     "semantico": {
-        "BERT.pt.TCU"          : [4.4 , 3.5 , 17.4, 5.6 ],
         "BERT.pt.base"         : [7.4 , 6.3 , 19.9, 8.3 ],
+        "BERT.pt.TCU"          : [4.4 , 3.5 , 17.4, 5.6 ],
         "BERT.pt.legal"        : [10.8, 8.8 , 28.8, 12.1],
         "BERT.pt.STJ"          : [20.2, 16.3, 42.4, 22.6],
         "BERT.ml"              : [14.6, 11.6, 35.1, 16.1],
@@ -103,8 +104,6 @@ def plot_metricas(grupo, calcular_percentual=True, salvar_figura=False, baseline
     fig.suptitle(f"Query group: G{grupo}")
 
     mapa = plt.cm.get_cmap("tab10", 20)
-    #colors = {"BM25 Variants": colors(0), "BERT Variants": colors(1)}
-    #0055FFFF, #3399FFFF, #66CCFFFF, #99EEFFFF, #CCFFFFFF, #FFFFCCFF, #FFEE99FF, #FFCC66FF, #FF9933FF, #FF5500FF
     colors = {
         "baseline": "lightgray",
         "expansao_doc": "lightgreen",
