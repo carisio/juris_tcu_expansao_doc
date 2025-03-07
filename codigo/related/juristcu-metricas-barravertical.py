@@ -30,8 +30,8 @@ metricas_g1 = {
     "semantico": {
         "BERT.pt.TCU"           : [4.4 , 3.5 , 17.4, 5.6 ],
         "BERT.pt.large"         : [7.4 , 6.3 , 19.9, 8.3 ],
-        "BERT.pt.large.legal"   : [10.8, 8.8 , 28.8, 12.1],
-#        "BERT.pt.large.legal.kd"    : [20.2, 16.3, 42.4, 22.6],
+        #"BERT.pt.large.legal.kd"   : [10.8, 8.8 , 28.8, 12.1],
+        "BERT.pt.large.legal"  : [20.2, 16.3, 42.4, 22.6],
         "BERT.ml"              : [14.6, 11.6, 35.1, 16.1],
         "OpenAI.small"         : [37.8, 30.7, 74.9, 44.5],
         "OpenAI.large"         : [40.8, 33.2, 75.4, 47.3]
@@ -52,11 +52,11 @@ metricas_g2 = {
     "semantico": {
         "BERT.pt.TCU"           : [11.0, 9.2 , 35.9, 13.4],
         "BERT.pt.large"         : [15.6, 13.2, 41.8, 18.7],
-        "BERT.pt.large.legal"   : [16.6, 13.7, 46.4, 21.0],
-#        "BERT.pt.large.legal.kd"    : [30.2, 24.8, 71.3, 38.5],
-        "BERT.ml"              : [24.6, 20.3, 60.5, 31.5],
-        "OpenAI.small"         : [46.8, 38.9, 89.5, 58.8],
-        "OpenAI.large"         : [49.2, 40.8, 89.2, 61.8]
+#       "BERT.pt.large.legal.kd"   : [16.6, 13.7, 46.4, 21.0],
+        "BERT.pt.large.legal"   : [30.2, 24.8, 71.3, 38.5],
+        "BERT.ml"               : [24.6, 20.3, 60.5, 31.5],
+        "OpenAI.small"          : [46.8, 38.9, 89.5, 58.8],
+        "OpenAI.large"          : [49.2, 40.8, 89.2, 61.8]
     }
 }
 
@@ -74,8 +74,8 @@ metricas_g3 = {
     "semantico": {
         "BERT.pt.TCU"          : [20.2, 18.0, 60.8, 28.8],
         "BERT.pt.large"        : [22.2, 19.6, 60.7, 28.9],
-        "BERT.pt.large.legal"  : [18.2, 16.1, 49.2, 23.4],
-#        "BERT.pt.large.legal.kd"    : [34.8, 30.7, 86.8, 46.0],
+#        "BERT.pt.large.legal,kd"  : [18.2, 16.1, 49.2, 23.4],
+        "BERT.pt.large.legal"  : [34.8, 30.7, 86.8, 46.0],
         "BERT.ml"              : [34.4, 30.5, 79.2, 45.2],
         "OpenAI.small"         : [48.2, 42.5, 91.7, 60.9],
         "OpenAI.large"         : [47.2, 41.5, 91.5, 60.8]
@@ -212,6 +212,6 @@ def plot_metricas(grupo, calcular_percentual=True, salvar_figura=False, baseline
 
 salvar_figura=True
 baseline_no_topo=True
-plot_metricas(grupo=1, calcular_percentual=False, salvar_figura=salvar_figura, baseline_no_topo=baseline_no_topo, limite_para_percentual_fora_barra=-50)
+plot_metricas(grupo=1, calcular_percentual=False, salvar_figura=salvar_figura, baseline_no_topo=baseline_no_topo, limite_para_percentual_fora_barra=-40)
 plot_metricas(grupo=2, calcular_percentual=False, salvar_figura=salvar_figura, baseline_no_topo=baseline_no_topo, limite_para_percentual_fora_barra=-100)
 plot_metricas(grupo=3, calcular_percentual=False, salvar_figura=salvar_figura, baseline_no_topo=baseline_no_topo, limite_para_percentual_fora_barra=-100)
