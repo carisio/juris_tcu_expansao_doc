@@ -9,8 +9,8 @@ import pandas as pd
 ordem_expansao_doc = ["BM25.dT5q",
                       "BM25.Syn(GPT3.5)", "BM25.Syn(GPT4o)", "BM25.Syn(Llama3)",
                       "BM25.dT5q.Syn(GPT35)", "BM25.dT5q.Syn(GPT4o)", "BM25.dT5q.Syn(Llama3)"]
-ordem_semantico = ["BERT.pt.base",
-                   "BERT.pt.TCU", "BERT.pt.legal", "BERT.pt.STJ",
+ordem_semantico = ["BERT.pt.base", "BERT.pt.base.TCU",
+                   "BERT.pt.legal", "BERT.pt.legal.STJ",
                    "BERT.ml",
                    "OpenAI.small", "OpenAI.large"]
 
@@ -28,9 +28,9 @@ metricas_g1 = {
         },
     "semantico": {
         "BERT.pt.base"         : [7.4 , 6.3 , 19.9, 8.3 ],
-        "BERT.pt.TCU"          : [4.4 , 3.5 , 17.4, 5.6 ],
+        "BERT.pt.base.TCU"     : [4.4 , 3.5 , 17.4, 5.6 ],
         "BERT.pt.legal"        : [10.8, 8.8 , 28.8, 12.1],
-        "BERT.pt.STJ"          : [20.2, 16.3, 42.4, 22.6],
+        "BERT.pt.legal.STJ"    : [20.2, 16.3, 42.4, 22.6],
         "BERT.ml"              : [14.6, 11.6, 35.1, 16.1],
         "OpenAI.small"         : [37.8, 30.7, 74.9, 44.5],
         "OpenAI.large"         : [40.8, 33.2, 75.4, 47.3]
@@ -49,10 +49,10 @@ metricas_g2 = {
         "BM25.dT5q.Syn(Llama3)": [42.0, 35.3, 90.9, 56.5]
         },
     "semantico": {
-        "BERT.pt.TCU"          : [11.0, 9.2 , 35.9, 13.4],
         "BERT.pt.base"         : [15.6, 13.2, 41.8, 18.7],
+        "BERT.pt.base.TCU"     : [11.0, 9.2 , 35.9, 13.4],
         "BERT.pt.legal"        : [16.6, 13.7, 46.4, 21.0],
-        "BERT.pt.STJ"          : [30.2, 24.8, 71.3, 38.5],
+        "BERT.pt.legal.STJ"    : [30.2, 24.8, 71.3, 38.5],
         "BERT.ml"              : [24.6, 20.3, 60.5, 31.5],
         "OpenAI.small"         : [46.8, 38.9, 89.5, 58.8],
         "OpenAI.large"         : [49.2, 40.8, 89.2, 61.8]
@@ -71,10 +71,10 @@ metricas_g3 = {
         "BM25.dT5q.Syn(Llama3)": [42.0, 37.2, 92.9, 56.4]
         },
     "semantico": {
-        "BERT.pt.TCU"          : [20.2, 18.0, 60.8, 28.8],
         "BERT.pt.base"         : [22.2, 19.6, 60.7, 28.9],
+        "BERT.pt.base.TCU"     : [20.2, 18.0, 60.8, 28.8],
         "BERT.pt.legal"        : [18.2, 16.1, 49.2, 23.4],
-        "BERT.pt.STJ"          : [34.8, 30.7, 86.8, 46.0],
+        "BERT.pt.legal.STJ"    : [34.8, 30.7, 86.8, 46.0],
         "BERT.ml"              : [34.4, 30.5, 79.2, 45.2],
         "OpenAI.small"         : [48.2, 42.5, 91.7, 60.9],
         "OpenAI.large"         : [47.2, 41.5, 91.5, 60.8]
