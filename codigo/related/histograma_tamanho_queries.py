@@ -58,7 +58,7 @@ def plot_histogram(array1, array2, array3, labels, nome_figura_salvar = None):
     
     plt.tight_layout()
     if nome_figura_salvar is not None:
-        plt.savefig(nome_figura_salvar, dpi=600, bbox_inches='tight')
+        plt.savefig(nome_figura_salvar, dpi=300, bbox_inches='tight')
     plt.show()
 
 # Exemplo de uso

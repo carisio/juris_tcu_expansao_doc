@@ -206,7 +206,7 @@ def plot_metricas(grupo, calcular_percentual=True, salvar_figura=False, baseline
     plt.tight_layout(rect=[0, 0, 1, 1], h_pad=5, w_pad=5)
     
     if salvar_figura:
-        plt.savefig(f"metrics_G{grupo}.png", dpi=600, bbox_inches='tight')
+        plt.savefig(f"metrics_G{grupo}.png", dpi=300, bbox_inches='tight')
     plt.show()
         
 
