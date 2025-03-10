@@ -50,11 +50,13 @@ def plot_histogram(array1, array2, array3, labels, nome_figura_salvar = None):
     ax.axvline(np.interp(mean3, all_keys, x), color='tab:green', linestyle='dashed', linewidth=1, label=f'Mean {labels[2]}')
     
     # Ajustar rótulos e legenda
-    ax.set_xlabel("Number of words per query")
-    ax.set_ylabel("Frequency")
+    ax.set_xlabel("Number of words per query", fontsize=12)
+    ax.set_ylabel("Frequency", fontsize=12)
     ax.set_xticks(x)
     ax.set_xticklabels(all_keys)
-    ax.legend()
+    ax.tick_params(axis='x', labelsize=11)
+    ax.tick_params(axis='y', labelsize=11)
+    ax.legend(fontsize=11)
     
     plt.tight_layout()
     if nome_figura_salvar is not None:

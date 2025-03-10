@@ -91,7 +91,7 @@ def percentual_do_baseline(resultados, baseline):
     return [(v - baseline) / baseline * 100 for v in resultados]
 
 
-def plot_metricas(grupo, calcular_percentual=True, salvar_figura=False, baseline_no_topo=True, limite_para_percentual_fora_barra=-50):
+def plot_metricas(grupo, calcular_percentual=True, salvar_figura=False, baseline_no_topo=True, maior_valor_exibir_fora_barra=90):
     if grupo == 1:
         metricas = metricas_g1
     elif grupo == 2:
@@ -101,16 +101,18 @@ def plot_metricas(grupo, calcular_percentual=True, salvar_figura=False, baseline
 
     # Configuração dos subplots
     label_metricas = ["P@10", "R@10", "MRR@10", "nDCG@10"]
-    fig, axes = plt.subplots(2, 2, figsize=(12, 10))
-    fig.suptitle(f"Query group: G{grupo}")
-
-    mapa = plt.cm.get_cmap("tab10", 20)
+    fig, axes = plt.subplots(2, 2,
+                             figsize=(12, 12),
+                             gridspec_kw={'wspace': 0.1, 'hspace': 0.35})
+    #fig.suptitle(f"Query group: G{grupo}", y=0.91, fontsize=12)
+   
+    mapa= plt.rcParams['axes.prop_cycle'].by_key()['color']
     colors = {
         "baseline": "lightgray",
-        "expansao_doc": "lightgreen",
-        "semantico": "lightsalmon"
+        "expansao_doc": mapa[0],
+        "semantico": mapa[1]
     }
-    alpha=0.7
+    alpha=0.6
 
     for idx_metrica, label_metrica in enumerate(label_metricas):
         ax = axes[idx_metrica // 2, idx_metrica % 2]
@@ -150,40 +152,45 @@ def plot_metricas(grupo, calcular_percentual=True, salvar_figura=False, baseline
         # Rótulos percentual em cima da barra
         if not calcular_percentual:
             for barra in barras_exp_doc + barras_semantico:
-                altura = barra.get_width()
-                valor_para_exibir = round(percentual_do_baseline(altura, baseline_value))
-                posicao_x_para_exibir = barra.get_width() + 6 if valor_para_exibir < limite_para_percentual_fora_barra else barra.get_width() / 2
-                valor_para_exibir = f"{'+' if valor_para_exibir > 0 else ''}{valor_para_exibir}%"
+                valor_barra = barra.get_width()
+                valor_para_exibir = round(percentual_do_baseline(valor_barra, baseline_value))
+                cor_texto_barra = 'red' if valor_para_exibir < 0 else 'darkgreen'
+                if valor_barra < maior_valor_exibir_fora_barra:
+                    posicao_x_para_exibir = barra.get_width() + (3.5 if valor_para_exibir == 2 else 5)
+                else:
+                    posicao_x_para_exibir = barra.get_width() - 5
+                valor_para_exibir = f"{'' if valor_para_exibir > 0 else ''}{valor_para_exibir}%"
                 ax.text(posicao_x_para_exibir,
                         barra.get_y() + (barra.get_height() if baseline_no_topo else 0),  # Posição do texto
                         valor_para_exibir,  # O texto a ser exibido
+                        color=cor_texto_barra,
                         ha='center', va='bottom', fontsize=12)  # Alinhamento e tamanho da fonte
             ax.set_xlim(0, 100)
     
         # Rótulos no eixo x e y e título
         if calcular_percentual:
             # Eixo x
-            ax.set_yticks(list(y_expansao_doc) + list(y_semantico))
-            ax.set_yticklabels(ordem_expansao_doc + ordem_semantico)
-            # Eixo y
+            ax.set_xlabel(f"{label_metrica}", fontsize=12)
             ax.set_xlabel("Percentage relative to the baseline")
-            # Título
-            ax.set_title(label_metrica)
+            # Eixo y
+            ax.set_yticks(list(y_expansao_doc) + list(y_semantico))
+            ax.set_yticklabels(ordem_expansao_doc + ordem_semantico)           
         else:
             # Eixo x
-            ax.set_yticks(list(y_baseline) + list(y_expansao_doc) + list(y_semantico))
-            ax.set_yticklabels(["BM25 (baseline)"] + ordem_expansao_doc + ordem_semantico)
+            ax.set_xlabel(f"{label_metrica}", fontsize=12)
             # Eixo y
-            ax.set_xlabel(f"{label_metrica}")
-            # Título
-            #ax.set_title(label_metrica)
-        
+            ax.set_yticks(list(y_baseline) + list(y_expansao_doc) + list(y_semantico))
+            if idx_metrica % 2 == 0:
+                ax.set_yticklabels(["BM25 (baseline)"] + ordem_expansao_doc + ordem_semantico)
+            else:
+                ax.set_yticklabels([])
+                   
         
         # Linha de referência no 0 %
         if calcular_percentual:
-            ax.axvline(0, color="black", linewidth=0.8)
+            ax.axvline(0, color="gray", linewidth=0.8)
         else:
-            ax.axvline(baseline_value, color="black", linestyle="--", linewidth=0.8)
+            ax.axvline(baseline_value, color="gray", linestyle="--", linewidth=0.8)
                 
         ax.grid(True, axis="y", linestyle="--", alpha=0.5)
                
@@ -197,11 +204,11 @@ def plot_metricas(grupo, calcular_percentual=True, salvar_figura=False, baseline
     if calcular_percentual:
         fig.legend(handles=[expansao_doc_patch, semantico_patch],
                loc="lower center",
-               bbox_to_anchor=(0.55, 0.45))
+               bbox_to_anchor=(0.52, 0.46))
     else:
         fig.legend(handles=[baseline_patch, expansao_doc_patch, semantico_patch],
                loc="lower center",
-               bbox_to_anchor=(0.55, 0.45))
+               bbox_to_anchor=(0.52, 0.46))
     
     plt.tight_layout(rect=[0, 0, 1, 1], h_pad=5, w_pad=5)
     
@@ -212,6 +219,7 @@ def plot_metricas(grupo, calcular_percentual=True, salvar_figura=False, baseline
 
 salvar_figura=True
 baseline_no_topo=True
-plot_metricas(grupo=1, calcular_percentual=False, salvar_figura=salvar_figura, baseline_no_topo=baseline_no_topo, limite_para_percentual_fora_barra=-40)
-plot_metricas(grupo=2, calcular_percentual=False, salvar_figura=salvar_figura, baseline_no_topo=baseline_no_topo, limite_para_percentual_fora_barra=-100)
-plot_metricas(grupo=3, calcular_percentual=False, salvar_figura=salvar_figura, baseline_no_topo=baseline_no_topo, limite_para_percentual_fora_barra=-100)
+maior_valor_exibir_fora_barra=100
+plot_metricas(grupo=1, calcular_percentual=False, salvar_figura=salvar_figura, baseline_no_topo=baseline_no_topo, maior_valor_exibir_fora_barra=maior_valor_exibir_fora_barra)
+plot_metricas(grupo=2, calcular_percentual=False, salvar_figura=salvar_figura, baseline_no_topo=baseline_no_topo, maior_valor_exibir_fora_barra=maior_valor_exibir_fora_barra)
+plot_metricas(grupo=3, calcular_percentual=False, salvar_figura=salvar_figura, baseline_no_topo=baseline_no_topo, maior_valor_exibir_fora_barra=maior_valor_exibir_fora_barra)
